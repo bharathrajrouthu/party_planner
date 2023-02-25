@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:party_planner/consts.dart';
-
+import 'dart:io' show Platform;
 import 'package:url_launcher/url_launcher.dart';
 
 class SideBar extends StatefulWidget {
@@ -13,9 +13,13 @@ class SideBar extends StatefulWidget {
 class _SideBarState extends State<SideBar> {
   launchMap() async {
     String query = Uri.encodeComponent("167 Lynhurst Cres, Uxbridge UB10 9EH");
-    String googleMapsUrl = "https://maps.apple.com/?address=$query";
+    String googleMapsUrl = Platform.isIOS
+        ? "https://maps.apple.com/?address=$query"
+        : "https://www.google.com/maps/search/?api=1&query=$query";
     // For google maps
     // https://www.google.com/maps/search/?api=1&query=$query
+    // For apple maps
+    // https://maps.apple.com/?address=$query
     if (await canLaunch(googleMapsUrl)) {
       await launch(googleMapsUrl);
     } else {
